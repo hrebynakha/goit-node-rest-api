@@ -9,7 +9,7 @@ export const getAllContacts = async (req, res) => {
 export const getOneContact = async (req, res) => {
   const contact = await contactsService.getContactById(req.params.id);
   if (!contact) {
-    const { status, message } = HttpError(404, "Not found");
+    const { status, message } = HttpError(404);
     return res.status(status).json({ message });
   }
   return res.status(200).json(contact);
@@ -18,7 +18,7 @@ export const getOneContact = async (req, res) => {
 export const deleteContact = async (req, res) => {
   const contact = await contactsService.removeContact(req.params.id);
   if (!contact) {
-    const { status, message } = HttpError(404, "Not found");
+    const { status, message } = HttpError(404);
     return res.status(status).json({ message });
   }
   return res.status(200).json(contact);
@@ -29,13 +29,13 @@ export const createContact = async (req, res) => {
   return res.status(201).json(contact);
 };
 
-export const updateContact = async (req, res, next) => {
+export const updateContact = async (req, res) => {
   const contact = await contactsService.updateContactById(
     req.params.id,
     req.body
   );
   if (!contact) {
-    const { status, message } = HttpError(404, "Not found");
+    const { status, message } = HttpError(404);
     return res.status(status).json({ message });
   }
   return res.status(200).json(contact);
