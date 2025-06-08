@@ -1,42 +1,42 @@
 import contactsService from "../services/contactsServices.js";
 import HttpError from "../helpers/HttpError.js";
+import controllerWrapper from "../helpers/controllerWrapper.js";
 
-export const getAllContacts = async (req, res) => {
+const getAllContactsController = async (req, res) => {
   const contacts = await contactsService.listContacts();
   return res.status(200).json(contacts);
 };
 
-export const getOneContact = async (req, res) => {
+const getOneContactController = async (req, res) => {
   const contact = await contactsService.getContactById(req.params.id);
-  if (!contact) {
-    const { status, message } = HttpError(404);
-    return res.status(status).json({ message });
-  }
+  if (!contact) throw HttpError(404);
   return res.status(200).json(contact);
 };
 
-export const deleteContact = async (req, res) => {
+const deleteContactController = async (req, res) => {
   const contact = await contactsService.removeContact(req.params.id);
-  if (!contact) {
-    const { status, message } = HttpError(404);
-    return res.status(status).json({ message });
-  }
+  if (!contact) throw HttpError(404);
   return res.status(200).json(contact);
 };
 
-export const createContact = async (req, res) => {
+const createContactController = async (req, res) => {
   const contact = await contactsService.addContact(req.body);
   return res.status(201).json(contact);
 };
 
-export const updateContact = async (req, res) => {
+const updateContactController = async (req, res) => {
   const contact = await contactsService.updateContactById(
     req.params.id,
     req.body
   );
-  if (!contact) {
-    const { status, message } = HttpError(404);
-    return res.status(status).json({ message });
-  }
+  if (!contact) throw HttpError(404);
   return res.status(200).json(contact);
+};
+
+export default {
+  getAllContactsController: controllerWrapper(getAllContactsController),
+  getOneContactController: controllerWrapper(getOneContactController),
+  deleteContactController: controllerWrapper(deleteContactController),
+  createContactController: controllerWrapper(createContactController),
+  updateContactController: controllerWrapper(updateContactController),
 };
