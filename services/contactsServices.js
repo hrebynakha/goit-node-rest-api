@@ -7,6 +7,7 @@ const contactsPath = path.join(__dirname, "db", "contacts.json");
 
 const updateContacts = (contacts) =>
   fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+
 const findContactById = (contacts, contactId) =>
   contacts.findIndex((contact) => contact.id === contactId);
 
