@@ -33,10 +33,22 @@ const updateContactController = async (req, res) => {
   return res.status(200).json(contact);
 };
 
+const updateStatusContactController = async (req, res) => {
+  const contact = await contactsService.updateStatusContact(
+    req.params.id,
+    req.body
+  );
+  if (!contact) throw HttpError(404);
+  return res.status(200).json(contact);
+};
+
 export default {
   getAllContactsController: controllerWrapper(getAllContactsController),
   getOneContactController: controllerWrapper(getOneContactController),
   deleteContactController: controllerWrapper(deleteContactController),
   createContactController: controllerWrapper(createContactController),
   updateContactController: controllerWrapper(updateContactController),
+  updateStatusContactController: controllerWrapper(
+    updateStatusContactController
+  ),
 };

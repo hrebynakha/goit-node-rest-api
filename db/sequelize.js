@@ -1,5 +1,4 @@
 import { Sequelize } from "sequelize";
-console.log(process.env.DATABASE_DIALECT);
 
 const sequelize = new Sequelize({
   dialect: process.env.DATABASE_DIALECT,
