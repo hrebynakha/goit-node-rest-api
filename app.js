@@ -3,7 +3,6 @@ import morgan from "morgan";
 import cors from "cors";
 import "dotenv/config";
 import "./db/sequelize.js";
-import "./models/contacts.js";
 
 import contactsRouter from "./routes/contactsRouter.js";
 

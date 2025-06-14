@@ -1,4 +1,4 @@
-import Contact from "../models/contacts.js";
+import Contact from "../models/Contact.js";
 
 const listContacts = () => Contact.findAll();
 const getContactById = (contactId) => Contact.findByPk(contactId);
