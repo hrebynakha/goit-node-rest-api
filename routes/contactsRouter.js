@@ -6,12 +6,13 @@ import {
   updateFavoriteContactSchema,
 } from "../schemas/contactsSchemas.js";
 import validateBody from "../helpers/validateBody.js";
+import auth from "../config/config-passport.js";
 
 const contactsRouter = express.Router();
 
-contactsRouter.get("/", contactsControllers.getAllContactsController);
+contactsRouter.get("/", auth, contactsControllers.getAllContactsController);
 
-contactsRouter.get("/:id", contactsControllers.getOneContactController);
+contactsRouter.get("/:id", auth, contactsControllers.getOneContactController);
 
 contactsRouter.delete("/:id", contactsControllers.deleteContactController);
 

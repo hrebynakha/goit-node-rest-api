@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import usersService from "../services/usersService.js";
+import usersService from "../services/usersServices.js";
 import HttpError from "../helpers/HttpError.js";
 import controllerWrapper from "../helpers/controllerWrapper.js";
 

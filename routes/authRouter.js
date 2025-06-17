@@ -1,17 +1,21 @@
 import express from "express";
-import {
-  registerController,
-  loginController,
-  logoutController,
-  getCurrentUserController,
-} from "../controllers/authControllers.js";
+import authControllers from "../controllers/authControllers.js";
 import { registerSchema, loginSchema } from "../schemas/authSchemas.js";
 import validateBody from "../helpers/validateBody.js";
+import auth from "../config/config-passport.js";
 
 const authRouter = express.Router();
 
-authRouter.post("/register", validateBody(registerSchema), registerController);
-authRouter.post("/login", validateBody(loginSchema), loginController);
-authRouter.post("/logout", logoutController);
-authRouter.get("/current", getCurrentUserController);
+authRouter.post(
+  "/register",
+  validateBody(registerSchema),
+  authControllers.registerController
+);
+authRouter.post(
+  "/login",
+  validateBody(loginSchema),
+  authControllers.loginController
+);
+authRouter.post("/logout", auth, authControllers.logoutController);
+authRouter.get("/current", auth, authControllers.getCurrentUserController);
 export default authRouter;
