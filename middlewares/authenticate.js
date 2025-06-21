@@ -14,6 +14,7 @@ const authenticate = async (req, res, next) => {
   if (error) return next(authExceptions.AuthError({ message: error.message }));
   const user = await findUser({ id: payload.id });
   if (!user || !user.token) return next(authExceptions.userNotFound());
+  if (user.token !== token) return next(authExceptions.invalidToken());
   req.user = user;
   next();
 };

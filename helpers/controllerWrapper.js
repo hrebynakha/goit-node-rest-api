@@ -18,7 +18,7 @@ const controllerWrapper = (ctrl) => {
       await ctrl(req, res, next);
     } catch (error) {
       if (error instanceof UniqueConstraintError) {
-        error = uniqueConstraintError(error);
+        next(uniqueConstraintError(error));
       } else if (error instanceof ValidationError) {
         error.status = 400;
       }

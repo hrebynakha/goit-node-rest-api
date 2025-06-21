@@ -17,7 +17,7 @@ const loginController = async (req, res) => {
 
 const logoutController = async (req, res) => {
   await authServices.logoutUser(req.user);
-  res.status(204);
+  res.sendStatus(204);
 };
 
 const getCurrentUserController = async (req, res) => {

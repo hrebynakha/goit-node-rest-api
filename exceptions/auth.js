@@ -15,6 +15,9 @@ const authorizationHeaderNotBearer = () => {
 const userNotFound = () => {
   return AuthError({ message: "User not found" });
 };
+const invalidToken = () => {
+  return AuthError({ message: "Invalid token" });
+};
 
 export default {
   AuthError,
@@ -22,4 +25,5 @@ export default {
   authorizationHeaderMissing,
   authorizationHeaderNotBearer,
   userNotFound,
+  invalidToken,
 };
