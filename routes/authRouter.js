@@ -1,8 +1,12 @@
 import express from "express";
 import authControllers from "../controllers/authControllers.js";
-import { registerSchema, loginSchema } from "../schemas/authSchemas.js";
+import {
+  registerSchema,
+  loginSchema,
+  updateSubscriptionSchema,
+} from "../schemas/authSchemas.js";
 import validateBody from "../helpers/validateBody.js";
-import auth from "../config/config-passport.js";
+import authenticate from "../middlewares/authenticate.js";
 
 const authRouter = express.Router();
 
@@ -16,6 +20,16 @@ authRouter.post(
   validateBody(loginSchema),
   authControllers.loginController
 );
-authRouter.post("/logout", auth, authControllers.logoutController);
-authRouter.get("/current", auth, authControllers.getCurrentUserController);
+authRouter.post("/logout", authenticate, authControllers.logoutController);
+authRouter.get(
+  "/current",
+  authenticate,
+  authControllers.getCurrentUserController
+);
+authRouter.patch(
+  "/subscription",
+  authenticate,
+  validateBody(updateSubscriptionSchema),
+  authControllers.updateSubscriptionController
+);
 export default authRouter;

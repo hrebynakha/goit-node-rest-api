@@ -1,32 +1,43 @@
 import contactsService from "../services/contactsServices.js";
-import HttpError from "../helpers/HttpError.js";
+import HttpError from "../exceptions/HttpError.js";
 import controllerWrapper from "../helpers/controllerWrapper.js";
 
 const getAllContactsController = async (req, res) => {
-  const contacts = await contactsService.listContacts();
+  const { id } = req.user;
+  const contacts = await contactsService.listContacts({ owner: id });
   return res.status(200).json(contacts);
 };
 
 const getOneContactController = async (req, res) => {
-  const contact = await contactsService.getContactById(req.params.id);
+  const { id } = req.user;
+  const contact = await contactsService.getContact({
+    id: req.params.id,
+    owner: id,
+  });
   if (!contact) throw HttpError(404);
   return res.status(200).json(contact);
 };
 
 const deleteContactController = async (req, res) => {
-  const contact = await contactsService.removeContact(req.params.id);
+  const { id } = req.user;
+  const contact = await contactsService.removeContact({
+    id: req.params.id,
+    owner: id,
+  });
   if (!contact) throw HttpError(404);
   return res.status(200).json(contact);
 };
 
 const createContactController = async (req, res) => {
-  const contact = await contactsService.addContact(req.body);
+  const { id } = req.user;
+  const contact = await contactsService.addContact({ ...req.body, owner: id });
   return res.status(201).json(contact);
 };
 
 const updateContactController = async (req, res) => {
-  const contact = await contactsService.updateContactById(
-    req.params.id,
+  const { id } = req.user;
+  const contact = await contactsService.updateContact(
+    { id: req.params.id, owner: id },
     req.body
   );
   if (!contact) throw HttpError(404);
@@ -34,8 +45,9 @@ const updateContactController = async (req, res) => {
 };
 
 const updateStatusContactController = async (req, res) => {
+  const { id } = req.user;
   const contact = await contactsService.updateStatusContact(
-    req.params.id,
+    { id: req.params.id, owner: id },
     req.body
   );
   if (!contact) throw HttpError(404);

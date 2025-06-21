@@ -1,16 +1,17 @@
 import Joi from "joi";
 import { phoneRegex } from "../constants/contacts.js";
+import { emailRegexp } from "../constants/global.js";
 
 export const createContactSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
-  email: Joi.string().email().required(),
+  email: Joi.string().pattern(emailRegexp).required(),
   phone: Joi.string().pattern(phoneRegex).required(),
   favorite: Joi.boolean().optional(),
 });
 
 export const updateContactSchema = Joi.object({
   name: Joi.string().min(3).max(30).optional(),
-  email: Joi.string().email().optional(),
+  email: Joi.string().pattern(emailRegexp).optional(),
   phone: Joi.string().pattern(phoneRegex).optional(),
   favorite: Joi.boolean().optional(),
 })

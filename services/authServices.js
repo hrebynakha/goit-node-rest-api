@@ -1,13 +1,16 @@
-import bcrypt from "bcrypt";
 import User from "../models/User.js";
-import HttpError from "../helpers/HttpError.js";
-import jwt from "jsonwebtoken";
+import { createToken } from "../helpers/jwt.js";
+import { hashPassword, comparePassword } from "../helpers/pwd.js";
+import authExceptions from "../exceptions/auth.js";
 
-const JWT_SECRET = process.env.JWT_SECRET;
+export const findUser = (query) =>
+  User.findOne({
+    where: query,
+  });
 
 export const registerUser = async (data) => {
-  const hashPassword = await bcrypt.hash(data.password, 10);
-  return User.create({ ...data, password: hashPassword });
+  const hashedPassword = await hashPassword(data.password);
+  return User.create({ ...data, password: hashedPassword });
 };
 
 export const loginUser = async ({ email, password }) => {
@@ -16,21 +19,34 @@ export const loginUser = async ({ email, password }) => {
       email,
     },
   });
-  if (!user) throw HttpError(401, "Email or password invalid");
+  if (!user) throw authExceptions.emailOrPasswordInvalid();
 
-  const passwordCompare = await bcrypt.compare(password, user.password);
-  if (!passwordCompare) throw HttpError(401, "Email or password invalid");
+  const passwordCompare = await comparePassword(password, user.password);
+  if (!passwordCompare) throw authExceptions.emailOrPasswordInvalid();
 
   const payload = {
     id: user.id,
   };
 
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
-
+  const token = createToken(payload);
+  user.token = token;
+  await user.save();
   return token;
 };
 
+export const logoutUser = async (user) => {
+  user.token = null;
+  await user.save();
+};
+
+export const updateSubscription = async ({ user, data }) => {
+  user.subscription = data.subscription;
+  await user.save();
+  return user;
+};
 export default {
   registerUser,
   loginUser,
+  logoutUser,
+  updateSubscription,
 };

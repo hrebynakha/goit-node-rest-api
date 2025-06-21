@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/sequelize.js";
-import { emailRegexp } from "../constants/auth.js";
+import { emailRegexp } from "../constants/global.js";
+import { subscriptions } from "../constants/auth.js";
 
 const User = sequelize.define("user", {
   password: {
@@ -20,8 +21,8 @@ const User = sequelize.define("user", {
   },
   subscription: {
     type: DataTypes.ENUM,
-    values: ["starter", "pro", "business"],
-    defaultValue: "starter",
+    values: subscriptions,
+    defaultValue: subscriptions[0],
   },
   token: {
     type: DataTypes.STRING,
@@ -29,6 +30,6 @@ const User = sequelize.define("user", {
   },
 });
 
-// Contact.sync({ alter: true });
+// User.sync();
 
 export default User;
