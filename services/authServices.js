@@ -31,7 +31,7 @@ export const loginUser = async ({ email, password }) => {
   const token = createToken(payload);
   user.token = token;
   await user.save();
-  return token;
+  return { token, user };
 };
 
 export const logoutUser = async (user) => {
