@@ -1,9 +1,12 @@
 import Contact from "../models/Contact.js";
 
-const listContacts = (query) =>
-  Contact.findAll({
+const listContacts = async ({ query, limit, offset }) => {
+  return Contact.findAll({
     where: query,
+    limit,
+    offset,
   });
+};
 const getContact = (query) => Contact.findOne({ where: query });
 const addContact = (data) => Contact.create(data);
 

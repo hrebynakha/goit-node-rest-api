@@ -3,8 +3,18 @@ import HttpError from "../exceptions/HttpError.js";
 import controllerWrapper from "../helpers/controllerWrapper.js";
 
 const getAllContactsController = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 20;
+  const offset = (page - 1) * limit;
+  const favorite = req.query.favorite || null;
   const { id } = req.user;
-  const contacts = await contactsService.listContacts({ owner: id });
+  const query = { owner: id };
+  if (favorite) query.favorite = favorite;
+  const contacts = await contactsService.listContacts({
+    query,
+    limit,
+    offset,
+  });
   return res.status(200).json(contacts);
 };
 
