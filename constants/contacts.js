@@ -1,0 +1,1 @@
+export const phoneRegex = /^\(\d{3}\)\s\d{3}-\d{4}$/;
