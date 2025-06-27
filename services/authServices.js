@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import { createToken } from "../helpers/jwt.js";
 import { hashPassword, comparePassword } from "../helpers/pwd.js";
 import authExceptions from "../exceptions/auth.js";
-import { createAvatarUrl } from "../helpers/avatar.js";
 
 export const findUser = (query) =>
   User.findOne({
@@ -11,8 +10,7 @@ export const findUser = (query) =>
 
 export const registerUser = async (data) => {
   const hashedPassword = await hashPassword(data.password);
-  const avatarURL = await createAvatarUrl(data.email);
-  return User.create({ ...data, password: hashedPassword, avatarURL });
+  return User.create({ ...data, password: hashedPassword });
 };
 
 export const loginUser = async ({ email, password }) => {

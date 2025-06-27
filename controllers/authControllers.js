@@ -1,9 +1,10 @@
 import authServices from "../services/authServices.js";
 import controllerWrapper from "../helpers/controllerWrapper.js";
-import { saveAvatar } from "../helpers/avatar.js";
+import { saveAvatar, createAvatarUrl } from "../helpers/avatar.js";
 
 const registerController = async (req, res) => {
-  const newUser = await authServices.registerUser(req.body);
+  const avatarURL = await createAvatarUrl(req.body.email);
+  const newUser = await authServices.registerUser({ ...req.body, avatarURL });
 
   res.status(201).json({
     user: {
