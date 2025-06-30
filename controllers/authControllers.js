@@ -3,7 +3,7 @@ import controllerWrapper from "../helpers/controllerWrapper.js";
 import { saveAvatar, createAvatarUrl } from "../helpers/avatar.js";
 
 const registerController = async (req, res) => {
-  const avatarURL = await createAvatarUrl(req.body.email);
+  const avatarURL = createAvatarUrl(req.body.email);
   const newUser = await authServices.registerUser({ ...req.body, avatarURL });
 
   res.status(201).json({
