@@ -20,6 +20,16 @@ export const registerUser = async (data) => {
   return User.create({ ...data, password: hashedPassword, verificationToken });
 };
 
+export const resendVerification = async (user) => {
+  const verificationToken = createVerificationToken();
+  await sendVerificationEmail({
+    to: user.email,
+    verificationToken,
+  });
+  user.verificationToken = verificationToken;
+  await user.save();
+};
+
 export const loginUser = async ({ email, password }) => {
   const user = await User.findOne({
     where: {
@@ -72,4 +82,5 @@ export default {
   updateAvatar,
   findUser,
   verifyUser,
+  resendVerification,
 };

@@ -72,6 +72,17 @@ export const verifyController = async (req, res) => {
   });
 };
 
+export const resendVerificationController = async (req, res) => {
+  const user = await authServices.findUser({ email: req.body.email });
+  if (!user) throw authExceptions.userNotFound({ status: 404 });
+  if (user.verify) throw authExceptions.userAlreadyVerified({ status: 400 });
+
+  await authServices.resendVerification(user);
+  res.json({
+    message: "Verification email sent",
+  });
+};
+
 export default {
   registerController: controllerWrapper(registerController),
   loginController: controllerWrapper(loginController),
@@ -80,4 +91,5 @@ export default {
   updateSubscriptionController: controllerWrapper(updateSubscriptionController),
   updateAvatarController: controllerWrapper(updateAvatarController),
   verifyController: controllerWrapper(verifyController),
+  resendVerificationController: controllerWrapper(resendVerificationController),
 };

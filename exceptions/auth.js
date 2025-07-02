@@ -15,6 +15,12 @@ const authorizationHeaderNotBearer = () => {
 const userNotFound = ({ status = 401, message = "User not found" }) => {
   return AuthError({ status, message });
 };
+const userAlreadyVerified = ({
+  status = 400,
+  message = "Verification has already been passed",
+}) => {
+  return AuthError({ status, message });
+};
 const invalidToken = () => {
   return AuthError({ message: "Invalid token" });
 };
@@ -26,4 +32,5 @@ export default {
   authorizationHeaderNotBearer,
   userNotFound,
   invalidToken,
+  userAlreadyVerified,
 };
