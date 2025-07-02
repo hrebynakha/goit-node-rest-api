@@ -13,6 +13,7 @@ const emailConfig = {
 
 const transporter = nodemailer.createTransport(emailConfig);
 
+// TODO: move to config or helpers
 const getHostLink = () => {
   return `http://${process.env.HOST || "localhost"}:${
     process.env.PORT || 3000
