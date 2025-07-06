@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-import { createVerificationTemplate } from "../helpers/verificationToken.js";
+import { createVerificationTemplate } from "../helpers/templates.js";
+import { getHostLink } from "../helpers/hostConfig.js";
 
 const emailConfig = {
   host: process.env.EMAIL_HOST || "smtp.ukr.net",
@@ -13,11 +14,9 @@ const emailConfig = {
 
 const transporter = nodemailer.createTransport(emailConfig);
 
-// TODO: move to config or helpers
-const getHostLink = () => {
-  return `http://${process.env.HOST || "localhost"}:${
-    process.env.PORT || 3000
-  }`;
+const sendEmail = async (payload) => {
+  const email = { ...payload, from: process.env.EMAIL_USER };
+  return await transporter.sendMail(email);
 };
 
 export const sendVerificationEmail = async ({ to, verificationToken }) => {
@@ -28,7 +27,6 @@ export const sendVerificationEmail = async ({ to, verificationToken }) => {
       name: to,
       verificationLink: `${getHostLink()}/api/auth/verify/${verificationToken}`,
     }),
-    from: process.env.EMAIL_USER,
   };
-  await transporter.sendMail(emailOptions);
+  await sendEmail(emailOptions);
 };
