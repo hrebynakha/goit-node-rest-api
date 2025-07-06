@@ -37,7 +37,7 @@ export const loginUser = async ({ email, password }) => {
     },
   });
   if (!user) throw authExceptions.emailOrPasswordInvalid();
-
+  if (!user.verify) throw authExceptions.userNotVerified();
   const passwordCompare = await comparePassword(password, user.password);
   if (!passwordCompare) throw authExceptions.emailOrPasswordInvalid();
 
