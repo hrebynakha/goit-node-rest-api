@@ -16,11 +16,8 @@ const userNotFound = ({ status = 401, message = "User not found" }) => {
   return AuthError({ status, message });
 };
 
-const userAlreadyVerified = ({
-  status = 400,
-  message = "Verification has already been passed",
-}) => {
-  return AuthError({ status, message });
+const userAlreadyVerified = () => {
+  return HttpError(400, "Verification has already been passed");
 };
 const invalidToken = () => {
   return AuthError({ message: "Invalid token" });

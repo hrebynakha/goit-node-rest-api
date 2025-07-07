@@ -19,5 +19,8 @@ export const updateSubscriptionSchema = Joi.object({
 });
 
 export const resendVerificationSchema = Joi.object({
-  email: Joi.string().pattern(emailRegexp).required(),
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "any.required": "missing required field email",
+    "string.pattern.base": "email must be a valid email",
+  }),
 });
