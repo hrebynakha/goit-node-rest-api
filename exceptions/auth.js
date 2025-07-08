@@ -19,6 +19,9 @@ const userNotFound = ({ status = 401, message = "User not found" }) => {
 const userAlreadyVerified = () => {
   return HttpError(400, "Verification has already been passed");
 };
+const userNotVerified = () => {
+  return HttpError(400, "User not verified");
+};
 const invalidToken = () => {
   return AuthError({ message: "Invalid token" });
 };
@@ -31,4 +34,5 @@ export default {
   userNotFound,
   invalidToken,
   userAlreadyVerified,
+  userNotVerified,
 };

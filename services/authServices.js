@@ -34,12 +34,12 @@ export const loginUser = async ({ email, password }) => {
   const user = await User.findOne({
     where: {
       email,
-      verify: true,
     },
   });
   if (!user) throw authExceptions.emailOrPasswordInvalid();
   const passwordCompare = await comparePassword(password, user.password);
   if (!passwordCompare) throw authExceptions.emailOrPasswordInvalid();
+  if (!user.verify) throw authExceptions.userNotVerified();
 
   const payload = {
     id: user.id,
